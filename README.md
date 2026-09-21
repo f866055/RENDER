@@ -328,3 +328,5 @@ Para probar ambos servicios a la vez en tu computadora:
    npm run dev
    ```
 3. Visita `http://localhost:5173` y verás el semáforo verde de conexión activa y el catálogo de productos cargado en tiempo real.
+#   R E N D E R  
+ 
