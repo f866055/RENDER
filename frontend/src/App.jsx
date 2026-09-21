@@ -10,7 +10,7 @@ export default function App() {
   const [healthData, setHealthData] = useState(null);
   const [healthLoading, setHealthLoading] = useState(true);
 
-  // Estado para la lista de productos
+  // Estado para el catálogo de apartamentos
   const [productos, setProductos] = useState([]);
   const [productosLoading, setProductosLoading] = useState(true);
   const [productosError, setProductosError] = useState(null);
@@ -25,14 +25,14 @@ export default function App() {
     } catch (err) {
       setHealthData({
         ok: false,
-        message: err.message || "Error al conectar"
+        message: err.message || "Error al conectar con la API"
       });
     } finally {
       setHealthLoading(false);
     }
   }, []);
 
-  // Función para consultar GET /api/productos
+  // Función para consultar GET /api/productos (apartamentos)
   const loadProductos = useCallback(async (categoria) => {
     setProductosLoading(true);
     setProductosError(null);
@@ -68,25 +68,46 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* Barra de navegación superior con badges tecnológicos */}
+      {/* Barra superior inmobiliaria con monitoreo en tiempo real */}
       <Navbar apiUrl={API_BASE_URL} isOnline={isConnected} />
 
       <main className="main-content">
-        {/* Banner Hero */}
+        {/* Banner Hero Inmobiliario de Lujo */}
         <section className="hero-banner">
-          <div className="hero-badge">
-            <span className="badge-sparkle">✨</span> Monorepo Listo para Despliegue en Render
+          <div className="hero-badge-luxury">
+            <span className="badge-sparkle">💎</span> Desarrollos Inmobiliarios Exclusivos
           </div>
+
           <h1 className="hero-title">
-            Arquitectura Desacoplada: <span className="text-gradient">Frontend + Backend</span>
+            Encuentra tu Próximo Hogar: <span className="text-gold-gradient">Apartamentos de Lujo</span>
           </h1>
+
           <p className="hero-subtitle">
-            Frontend servido como <strong>Static Site</strong> y API servida como <strong>Web Service</strong>.
-            La comunicación se realiza exclusivamente a través de <code>import.meta.env.VITE_API_URL</code>.
+            Penthouses de doble altura, residencias familiares y lofts ejecutivos con acabados de autor,
+            domótica integrada y ubicaciones privilegiadas.
           </p>
+
+          <div className="hero-features-bar">
+            <div className="hero-feat-item">
+              <span className="feat-icon">🔑</span>
+              <span>Entrega Inmediata</span>
+            </div>
+            <div className="hero-feat-item">
+              <span className="feat-icon">📐</span>
+              <span>Desde 52 m² hasta 260 m²</span>
+            </div>
+            <div className="hero-feat-item">
+              <span className="feat-icon">🏊</span>
+              <span>Amenidades Premium</span>
+            </div>
+            <div className="hero-feat-item">
+              <span className="feat-icon">⚡</span>
+              <span>Monitoreo API en Tiempo Real</span>
+            </div>
+          </div>
         </section>
 
-        {/* Sección 1: Monitor de Estado (GET /api/health) */}
+        {/* Sección 1: Monitor de Conexión del Backend (GET /api/health) */}
         <HealthStatus
           healthData={healthData}
           loading={healthLoading}
@@ -94,7 +115,7 @@ export default function App() {
           apiUrl={API_BASE_URL}
         />
 
-        {/* Sección 2: Catálogo de Productos (GET /api/productos) */}
+        {/* Sección 2: Catálogo de Apartamentos en Venta (GET /api/productos) */}
         <ProductList
           productos={productos}
           loading={productosLoading}
@@ -104,27 +125,40 @@ export default function App() {
           onSelectCategoria={handleSelectCategoria}
         />
 
-        {/* Guía Rápida Integrada de Despliegue para Render */}
+        {/* Sección 3: Guía de Despliegue en Render para Arquitectura Desacoplada */}
         <section className="deploy-guide-section glass-panel">
-          <h2 className="guide-title">🚀 Configuración Rápida en Render</h2>
+          <div className="guide-header-badge">
+            <span className="sparkle">🚀</span> Guía de Despliegue en Render
+          </div>
+          <h2 className="guide-title">Configuración de Servicios Independientes</h2>
+          <p className="guide-intro">
+            Esta aplicación inmobiliaria se compone de dos servicios independientes desplegados desde el mismo repositorio de GitHub:
+          </p>
+
           <div className="guide-grid">
             <div className="guide-card">
               <div className="guide-card-header">
                 <span className="guide-step">1</span>
-                <h3>Backend (Web Service)</h3>
+                <div>
+                  <h3>Backend API (Web Service)</h3>
+                  <span className="guide-service-type">Node.js + Express REST API</span>
+                </div>
               </div>
               <ul className="guide-list">
                 <li><strong>Root Directory:</strong> <code>backend</code></li>
                 <li><strong>Build Command:</strong> <code>npm install</code></li>
                 <li><strong>Start Command:</strong> <code>npm start</code></li>
-                <li><strong>Variable Render:</strong> Asigna puerto automáticamente con <code>process.env.PORT</code></li>
+                <li><strong>Variable de Entorno:</strong> Puerto dinámico gestionado con <code>PORT = process.env.PORT || 3000</code></li>
               </ul>
             </div>
 
             <div className="guide-card">
               <div className="guide-card-header">
                 <span className="guide-step">2</span>
-                <h3>Frontend (Static Site)</h3>
+                <div>
+                  <h3>Frontend Web (Static Site)</h3>
+                  <span className="guide-service-type">React + Vite SPA</span>
+                </div>
               </div>
               <ul className="guide-list">
                 <li><strong>Root Directory:</strong> <code>frontend</code></li>
@@ -138,7 +172,10 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>Proyecto Full-Stack preparado para Render • Estructura independiente en monorepositorio</p>
+        <div className="footer-content">
+          <p className="footer-brand">🏛️ Aura Residences • Inmobiliaria Full-Stack preparada para Render</p>
+          <p className="footer-sub">Frontend Static Site + Backend Web Service en Monorepo</p>
+        </div>
       </footer>
     </div>
   );

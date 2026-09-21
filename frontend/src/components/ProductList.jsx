@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 
-const CATEGORIAS = ['todos', 'Periféricos', 'Monitores', 'Audio', 'Mobiliario'];
+const CATEGORIAS_INMOBILIARIAS = [
+  { id: 'todos', label: '🏙️ Todos los Apartamentos' },
+  { id: 'Penthouse', label: '👑 Penthouses' },
+  { id: 'Loft', label: '🏢 Lofts' },
+  { id: 'Dúplex', label: '🪜 Dúplex' },
+  { id: 'Estudio', label: '🛋️ Estudios Smart' },
+  { id: 'Familiar', label: '👨‍👩‍👧‍👦 Residencias Familiares' }
+];
 
 export default function ProductList({
   productos,
@@ -13,11 +20,15 @@ export default function ProductList({
 }) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Filtrado reactivo en el frontend por texto de búsqueda
-  const productosFiltrados = productos.filter((p) => {
-    const coincideTexto = p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          p.descripcion.toLowerCase().includes(searchTerm.toLowerCase());
-    return coincideTexto;
+  // Filtrado reactivo en el frontend por texto de búsqueda (nombre, ubicación, descripción)
+  const apartamentosFiltrados = productos.filter((apt) => {
+    const query = searchTerm.toLowerCase();
+    const coincideNombre = apt.nombre?.toLowerCase().includes(query);
+    const coincideUbicacion = apt.ubicacion?.toLowerCase().includes(query);
+    const coincideDescripcion = apt.descripcion?.toLowerCase().includes(query);
+    const coincideCategoria = apt.categoria?.toLowerCase().includes(query);
+
+    return coincideNombre || coincideUbicacion || coincideDescripcion || coincideCategoria;
   });
 
   return (
@@ -25,9 +36,12 @@ export default function ProductList({
       <div className="products-toolbar glass-panel">
         <div className="toolbar-header">
           <div>
-            <h2 className="section-title">Catálogo de Productos</h2>
+            <div className="section-badge-inline">
+              <span className="sparkle">✨</span> Catálogo Exclusivo
+            </div>
+            <h2 className="section-title">Apartamentos en Venta</h2>
             <p className="section-description">
-              Datos dinámicos consumidos mediante <code>GET /api/productos</code>
+              Propiedades listas para entrega inmediata obtenidas dinámicamente vía <code>GET /api/productos</code>
             </p>
           </div>
 
@@ -38,7 +52,7 @@ export default function ProductList({
             </svg>
             <input
               type="text"
-              placeholder="Buscar por nombre o descripción..."
+              placeholder="Buscar por zona, torre, tipo o amenidad..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -49,51 +63,53 @@ export default function ProductList({
           </div>
         </div>
 
-        {/* Filtro por categorías */}
+        {/* Barra de Tipologías Inmobiliarias */}
         <div className="categories-bar">
-          {CATEGORIAS.map((cat) => (
+          {CATEGORIAS_INMOBILIARIAS.map((cat) => (
             <button
-              key={cat}
-              onClick={() => onSelectCategoria(cat)}
-              className={`cat-pill ${categoriaActiva === cat ? 'cat-active' : ''}`}
+              key={cat.id}
+              onClick={() => onSelectCategoria(cat.id)}
+              className={`cat-pill ${categoriaActiva.toLowerCase() === cat.id.toLowerCase() ? 'cat-active' : ''}`}
             >
-              {cat === 'todos' ? '📦 Todos los productos' : cat}
+              {cat.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Manejo de estados de carga, error y lista vacía */}
+      {/* Estados de Carga, Error y Grid */}
       {loading ? (
         <div className="products-state-box glass-panel animate-fade-in">
           <div className="spinner large-spinner"></div>
-          <h3>Cargando productos desde el Backend...</h3>
-          <p className="text-muted">Esperando respuesta de la API REST</p>
+          <h3>Cargando apartamentos desde el servidor...</h3>
+          <p className="text-muted">Obteniendo disponibilidades, fotografías y amenidades en tiempo real</p>
         </div>
       ) : error ? (
         <div className="products-state-box glass-panel state-error animate-fade-in">
           <div className="state-icon">⚠️</div>
-          <h3>Error al obtener los productos</h3>
+          <h3>Error al obtener el catálogo de apartamentos</h3>
           <p className="text-muted">{error}</p>
           <button onClick={onRefresh} className="btn-retry">
-            Reintentar Carga
+            Reintentar Consulta
           </button>
         </div>
-      ) : productosFiltrados.length === 0 ? (
+      ) : apartamentosFiltrados.length === 0 ? (
         <div className="products-state-box glass-panel animate-fade-in">
-          <div className="state-icon">🔍</div>
-          <h3>No se encontraron productos</h3>
-          <p className="text-muted">Intenta cambiar el término de búsqueda o selecciona otra categoría.</p>
+          <div className="state-icon">🏢</div>
+          <h3>No se encontraron apartamentos con esos criterios</h3>
+          <p className="text-muted">Prueba buscando otra tipología o borrando el filtro de búsqueda.</p>
         </div>
       ) : (
         <>
           <div className="products-meta">
             <span>
-              Mostrando <strong>{productosFiltrados.length}</strong> de {productos.length} productos
+              Mostrando <strong>{apartamentosFiltrados.length}</strong> de {productos.length} propiedades disponibles
             </span>
+            <span className="meta-badge-currency">Precios expresados en USD</span>
           </div>
-          <div className="products-grid animate-fade-in">
-            {productosFiltrados.map((item) => (
+
+          <div className="apartments-grid animate-fade-in">
+            {apartamentosFiltrados.map((item) => (
               <ProductCard key={item.id} producto={item} />
             ))}
           </div>

@@ -5,10 +5,10 @@ export default function Navbar({ apiUrl, isOnline }) {
     <header className="navbar-container">
       <div className="navbar-inner">
         <div className="logo-group">
-          <div className="logo-icon">⚡</div>
+          <div className="logo-icon real-estate-logo">🏛️</div>
           <div>
-            <h1 className="logo-title">CloudStack</h1>
-            <span className="logo-subtitle">Full-Stack Monorepo para Render</span>
+            <h1 className="logo-title">AURA <span className="text-gold">RESIDENCES</span></h1>
+            <span className="logo-subtitle">Venta Exclusiva de Apartamentos & Penthouses</span>
           </div>
         </div>
 
