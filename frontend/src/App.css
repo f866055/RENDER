@@ -91,8 +91,13 @@
   border-radius: 50%;
 }
 
-.dot-vite { background: #06b6d4; }
-.dot-node { background: #22c55e; }
+.dot-vite {
+  background: #06b6d4;
+}
+
+.dot-node {
+  background: #22c55e;
+}
 
 .status-pill {
   display: inline-flex;
@@ -165,6 +170,7 @@
 .text-gradient {
   background: linear-gradient(135deg, #818cf8 0%, #38bdf8 50%, #34d399 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -294,8 +300,13 @@
   color: var(--text-main);
 }
 
-.text-success { color: #34d399; }
-.text-danger { color: #f87171; }
+.text-success {
+  color: #34d399;
+}
+
+.text-danger {
+  color: #f87171;
+}
 
 .metric-code {
   font-size: 0.82rem;
@@ -313,7 +324,9 @@
   color: var(--text-muted);
 }
 
-.capitalize { text-transform: capitalize; }
+.capitalize {
+  text-transform: capitalize;
+}
 
 .connection-alert {
   display: flex;
@@ -325,7 +338,9 @@
   padding: 1rem 1.25rem;
 }
 
-.alert-icon { font-size: 1.5rem; }
+.alert-icon {
+  font-size: 1.5rem;
+}
 
 .alert-content h4 {
   color: #fca5a5;
@@ -522,8 +537,13 @@
   font-weight: 500;
 }
 
-.stock-ok { color: #34d399; }
-.stock-low { color: #fbbf24; }
+.stock-ok {
+  color: #34d399;
+}
+
+.stock-low {
+  color: #fbbf24;
+}
 
 .product-title {
   font-size: 1.15rem;
@@ -606,7 +626,9 @@
   border-top-color: var(--primary);
 }
 
-.state-icon { font-size: 2.2rem; }
+.state-icon {
+  font-size: 2.2rem;
+}
 
 .btn-retry {
   margin-top: 0.5rem;
@@ -705,18 +727,22 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
   .badges-group {
     width: 100%;
     justify-content: space-between;
   }
+
   .health-header {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .toolbar-header {
     flex-direction: column;
     align-items: stretch;
   }
+
   .search-wrap {
     max-width: 100%;
   }
