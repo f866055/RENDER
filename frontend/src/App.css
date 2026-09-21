@@ -255,6 +255,189 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+.status-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.render-cloud-badge {
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  color: #38bdf8;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.render-local-badge {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.health-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-edit-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn-edit-url:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--border-highlight);
+}
+
+/* Banner de Notificación de Render */
+.render-deploy-banner {
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.deploy-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.deploy-banner-icon {
+  font-size: 2rem;
+}
+
+.deploy-badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  margin-bottom: 0.2rem;
+}
+
+.deploy-badge-status .status-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.deploy-badge-status code {
+  color: #38bdf8;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.deploy-banner-text {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.btn-open-render {
+  background: var(--gold-primary);
+  color: #07090e;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px var(--gold-glow);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-open-render:hover {
+  background: var(--gold-hover);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+/* Editor de URL Dinámica */
+.url-editor-box {
+  background: rgba(7, 9, 14, 0.85);
+  border: 1px solid var(--gold-primary);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.url-editor-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+
+.url-editor-input-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.url-editor-input {
+  flex: 1;
+  min-width: 260px;
+  padding: 0.65rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.url-editor-input:focus {
+  border-color: var(--gold-primary);
+}
+
+.btn-save-url {
+  background: var(--gold-primary);
+  color: #07090e;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.btn-reset-url {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
+.url-editor-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
 .section-title {
   font-size: 1.4rem;
   font-weight: 700;

@@ -2,10 +2,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import HealthStatus from './components/HealthStatus';
 import ProductList from './components/ProductList';
-import { checkHealth, fetchProductos, API_BASE_URL } from './services/api';
+import { checkHealth, fetchProductos, DEFAULT_API_URL } from './services/api';
 import './App.css';
 
 export default function App() {
+  // Estado para la URL activa del Backend (con persistencia local opcional para pruebas de Render)
+  const [activeApiUrl, setActiveApiUrl] = useState(() => {
+    const saved = localStorage.getItem('aura_custom_api_url');
+    return saved || DEFAULT_API_URL;
+  });
+
   // Estado para la salud del Backend
   const [healthData, setHealthData] = useState(null);
   const [healthLoading, setHealthLoading] = useState(true);
@@ -16,11 +22,18 @@ export default function App() {
   const [productosError, setProductosError] = useState(null);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('todos');
 
+  // Guardar cambio de URL en localStorage y recargar
+  const handleUpdateApiUrl = (newUrl) => {
+    const clean = newUrl.replace(/\/+$/, '');
+    localStorage.setItem('aura_custom_api_url', clean);
+    setActiveApiUrl(clean);
+  };
+
   // Función para consultar GET /api/health
   const loadHealth = useCallback(async () => {
     setHealthLoading(true);
     try {
-      const data = await checkHealth();
+      const data = await checkHealth(activeApiUrl);
       setHealthData(data);
     } catch (err) {
       setHealthData({
@@ -30,14 +43,14 @@ export default function App() {
     } finally {
       setHealthLoading(false);
     }
-  }, []);
+  }, [activeApiUrl]);
 
   // Función para consultar GET /api/productos (apartamentos)
   const loadProductos = useCallback(async (categoria) => {
     setProductosLoading(true);
     setProductosError(null);
     try {
-      const data = await fetchProductos(categoria);
+      const data = await fetchProductos(categoria, activeApiUrl);
       if (data && data.productos) {
         setProductos(data.productos);
       } else {
@@ -49,9 +62,9 @@ export default function App() {
     } finally {
       setProductosLoading(false);
     }
-  }, []);
+  }, [activeApiUrl]);
 
-  // Cargar datos iniciales al montar la aplicación
+  // Cargar datos iniciales al montar o cambiar activeApiUrl
   useEffect(() => {
     loadHealth();
   }, [loadHealth]);
@@ -65,17 +78,44 @@ export default function App() {
   };
 
   const isConnected = healthData?.ok === true;
+  const isRenderCloud = activeApiUrl.includes('onrender.com');
 
   return (
     <div className="app-container">
-      {/* Barra superior inmobiliaria con monitoreo en tiempo real */}
-      <Navbar apiUrl={API_BASE_URL} isOnline={isConnected} />
+      {/* Barra superior con monitoreo */}
+      <Navbar apiUrl={activeApiUrl} isOnline={isConnected} />
 
       <main className="main-content">
-        {/* Banner Hero Inmobiliario de Lujo */}
+        {/* Banner de Estado de Despliegue en Render */}
+        <div className="render-deploy-banner glass-panel animate-fade-in">
+          <div className="deploy-banner-left">
+            <span className="deploy-banner-icon">🚀</span>
+            <div>
+              <div className="deploy-badge-status">
+                <span className="status-dot"></span>
+                Código Subido a GitHub: <strong>f866055/RENDER</strong> (Rama <code>main</code>)
+              </div>
+              <p className="deploy-banner-text">
+                Tu proyecto ya está listo en GitHub para desplegarse en Render en 2 servicios separados (Web Service y Static Site).
+              </p>
+            </div>
+          </div>
+          <div className="deploy-banner-right">
+            <a
+              href="https://dashboard.render.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-open-render"
+            >
+              Abrir Render Dashboard ↗
+            </a>
+          </div>
+        </div>
+
+        {/* Hero Banner Inmobiliario */}
         <section className="hero-banner">
           <div className="hero-badge-luxury">
-            <span className="badge-sparkle">💎</span> Desarrollos Inmobiliarios Exclusivos
+            <span className="badge-sparkle">💎</span> Aura Luxury Residences
           </div>
 
           <h1 className="hero-title">
@@ -84,7 +124,7 @@ export default function App() {
 
           <p className="hero-subtitle">
             Penthouses de doble altura, residencias familiares y lofts ejecutivos con acabados de autor,
-            domótica integrada y ubicaciones privilegiadas.
+            domótica integrada y vistas panorámicas.
           </p>
 
           <div className="hero-features-bar">
@@ -101,8 +141,8 @@ export default function App() {
               <span>Amenidades Premium</span>
             </div>
             <div className="hero-feat-item">
-              <span className="feat-icon">⚡</span>
-              <span>Monitoreo API en Tiempo Real</span>
+              <span className="feat-icon">☁️</span>
+              <span>{isRenderCloud ? 'Conectado a Render Cloud' : 'Servidor Local Preparado para Render'}</span>
             </div>
           </div>
         </section>
@@ -112,7 +152,9 @@ export default function App() {
           healthData={healthData}
           loading={healthLoading}
           onRefresh={loadHealth}
-          apiUrl={API_BASE_URL}
+          currentApiUrl={activeApiUrl}
+          onChangeApiUrl={handleUpdateApiUrl}
+          defaultEnvUrl={DEFAULT_API_URL}
         />
 
         {/* Sección 2: Catálogo de Apartamentos en Venta (GET /api/productos) */}
@@ -125,14 +167,14 @@ export default function App() {
           onSelectCategoria={handleSelectCategoria}
         />
 
-        {/* Sección 3: Guía de Despliegue en Render para Arquitectura Desacoplada */}
+        {/* Sección 3: Guía Rápida para Activar tus 2 Servicios en Render */}
         <section className="deploy-guide-section glass-panel">
           <div className="guide-header-badge">
-            <span className="sparkle">🚀</span> Guía de Despliegue en Render
+            <span className="sparkle">📋</span> Pasos para Ponerlo en Render
           </div>
-          <h2 className="guide-title">Configuración de Servicios Independientes</h2>
+          <h2 className="guide-title">Cómo Activar tus 2 Servicios en Render Ahora Mismo</h2>
           <p className="guide-intro">
-            Esta aplicación inmobiliaria se compone de dos servicios independientes desplegados desde el mismo repositorio de GitHub:
+            Como tu código ya está subido a <strong>https://github.com/f866055/RENDER</strong>, solo debes seguir estos 2 pasos en tu cuenta de Render:
           </p>
 
           <div className="guide-grid">
@@ -140,15 +182,17 @@ export default function App() {
               <div className="guide-card-header">
                 <span className="guide-step">1</span>
                 <div>
-                  <h3>Backend API (Web Service)</h3>
-                  <span className="guide-service-type">Node.js + Express REST API</span>
+                  <h3>Paso 1: Crear el Backend (Web Service)</h3>
+                  <span className="guide-service-type">API en Node.js + Express</span>
                 </div>
               </div>
               <ul className="guide-list">
-                <li><strong>Root Directory:</strong> <code>backend</code></li>
-                <li><strong>Build Command:</strong> <code>npm install</code></li>
-                <li><strong>Start Command:</strong> <code>npm start</code></li>
-                <li><strong>Variable de Entorno:</strong> Puerto dinámico gestionado con <code>PORT = process.env.PORT || 3000</code></li>
+                <li>1. Ve a <a href="https://dashboard.render.com" target="_blank" rel="noreferrer">dashboard.render.com</a> ➜ <strong>New +</strong> ➜ <strong>Web Service</strong>.</li>
+                <li>2. Selecciona tu repositorio <strong>RENDER</strong>.</li>
+                <li>3. <strong>Root Directory:</strong> escribe <code>backend</code></li>
+                <li>4. <strong>Build Command:</strong> <code>npm install</code></li>
+                <li>5. <strong>Start Command:</strong> <code>npm start</code></li>
+                <li>6. Haz clic en <strong>Create Web Service</strong> y copia la URL generada (ej: <code>https://mi-backend.onrender.com</code>).</li>
               </ul>
             </div>
 
@@ -156,15 +200,20 @@ export default function App() {
               <div className="guide-card-header">
                 <span className="guide-step">2</span>
                 <div>
-                  <h3>Frontend Web (Static Site)</h3>
-                  <span className="guide-service-type">React + Vite SPA</span>
+                  <h3>Paso 2: Crear el Frontend (Static Site)</h3>
+                  <span className="guide-service-type">Web React + Vite</span>
                 </div>
               </div>
               <ul className="guide-list">
-                <li><strong>Root Directory:</strong> <code>frontend</code></li>
-                <li><strong>Build Command:</strong> <code>npm install && npm run build</code></li>
-                <li><strong>Publish Directory:</strong> <code>dist</code></li>
-                <li><strong>Variable de Entorno:</strong> <code>VITE_API_URL=https://TU-BACKEND.onrender.com</code></li>
+                <li>1. En Render, haz clic en <strong>New +</strong> ➜ <strong>Static Site</strong>.</li>
+                <li>2. Selecciona el mismo repositorio <strong>RENDER</strong>.</li>
+                <li>3. <strong>Root Directory:</strong> escribe <code>frontend</code></li>
+                <li>4. <strong>Build Command:</strong> <code>npm install && npm run build</code></li>
+                <li>5. <strong>Publish Directory:</strong> <code>dist</code></li>
+                <li>6. En <strong>Environment Variables</strong> añade:<br/>
+                    <code>VITE_API_URL</code> = <code>https://TU-BACKEND.onrender.com</code>
+                </li>
+                <li>7. Haz clic en <strong>Create Static Site</strong> ¡y listo!</li>
               </ul>
             </div>
           </div>
@@ -174,7 +223,7 @@ export default function App() {
       <footer className="app-footer">
         <div className="footer-content">
           <p className="footer-brand">🏛️ Aura Residences • Inmobiliaria Full-Stack preparada para Render</p>
-          <p className="footer-sub">Frontend Static Site + Backend Web Service en Monorepo</p>
+          <p className="footer-sub">Repositorio: github.com/f866055/RENDER • Rama main</p>
         </div>
       </footer>
     </div>
