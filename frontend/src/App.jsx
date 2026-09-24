@@ -8,7 +8,7 @@ import './App.css';
 export default function App() {
   // Estado para la URL activa del Backend (con persistencia local opcional para pruebas de Render)
   const [activeApiUrl, setActiveApiUrl] = useState(() => {
-    const saved = localStorage.getItem('aura_custom_api_url');
+    const saved = localStorage.getItem('veloce_custom_api_url') || localStorage.getItem('aura_custom_api_url');
     return saved || DEFAULT_API_URL;
   });
 
@@ -16,7 +16,7 @@ export default function App() {
   const [healthData, setHealthData] = useState(null);
   const [healthLoading, setHealthLoading] = useState(true);
 
-  // Estado para el catálogo de apartamentos
+  // Estado para el catálogo de vehículos
   const [productos, setProductos] = useState([]);
   const [productosLoading, setProductosLoading] = useState(true);
   const [productosError, setProductosError] = useState(null);
@@ -25,7 +25,7 @@ export default function App() {
   // Guardar cambio de URL en localStorage y recargar
   const handleUpdateApiUrl = (newUrl) => {
     const clean = newUrl.replace(/\/+$/, '');
-    localStorage.setItem('aura_custom_api_url', clean);
+    localStorage.setItem('veloce_custom_api_url', clean);
     setActiveApiUrl(clean);
   };
 
@@ -45,7 +45,7 @@ export default function App() {
     }
   }, [activeApiUrl]);
 
-  // Función para consultar GET /api/productos (apartamentos)
+  // Función para consultar GET /api/productos (superdeportivos)
   const loadProductos = useCallback(async (categoria) => {
     setProductosLoading(true);
     setProductosError(null);
@@ -112,33 +112,33 @@ export default function App() {
           </div>
         </div>
 
-        {/* Hero Banner Inmobiliario */}
+        {/* Hero Banner Automotriz de Alto Desempeño */}
         <section className="hero-banner">
           <div className="hero-badge-luxury">
-            <span className="badge-sparkle">💎</span> Aura Luxury Residences
+            <span className="badge-sparkle">🏎️</span> Veloce Exotic Supercars Showroom
           </div>
 
           <h1 className="hero-title">
-            Encuentra tu Próximo Hogar: <span className="text-gold-gradient">Apartamentos de Lujo</span>
+            Conduce el Desempeño Puro: <span className="text-gold-gradient">Superdeportivos de Élite</span>
           </h1>
 
           <p className="hero-subtitle">
-            Penthouses de doble altura, residencias familiares y lofts ejecutivos con acabados de autor,
-            domótica integrada y vistas panorámicas.
+            Modelos de colección, hiperhíbridos de más de 1,000 HP, V8 Twin-Turbo y V12 atmosféricos
+            con entrega inmediata, certificación VIP y acceso a pista de pruebas.
           </p>
 
           <div className="hero-features-bar">
             <div className="hero-feat-item">
-              <span className="feat-icon">🔑</span>
-              <span>Entrega Inmediata</span>
+              <span className="feat-icon">⚡</span>
+              <span>0 a 100 km/h en hasta 1.8s</span>
             </div>
             <div className="hero-feat-item">
-              <span className="feat-icon">📐</span>
-              <span>Desde 52 m² hasta 260 m²</span>
+              <span className="feat-icon">🐎</span>
+              <span>Hasta 1,914 HP de Potencia</span>
             </div>
             <div className="hero-feat-item">
-              <span className="feat-icon">🏊</span>
-              <span>Amenidades Premium</span>
+              <span className="feat-icon">🏁</span>
+              <span>Certificación de Pista VIP</span>
             </div>
             <div className="hero-feat-item">
               <span className="feat-icon">☁️</span>
@@ -157,7 +157,7 @@ export default function App() {
           defaultEnvUrl={DEFAULT_API_URL}
         />
 
-        {/* Sección 2: Catálogo de Apartamentos en Venta (GET /api/productos) */}
+        {/* Sección 2: Catálogo de Superdeportivos en Venta (GET /api/productos) */}
         <ProductList
           productos={productos}
           loading={productosLoading}
@@ -174,7 +174,7 @@ export default function App() {
           </div>
           <h2 className="guide-title">Cómo Activar tus 2 Servicios en Render Ahora Mismo</h2>
           <p className="guide-intro">
-            Como tu código ya está subido a <strong>https://github.com/f866055/RENDER</strong>, solo debes seguir estos 2 pasos en tu cuenta de Render:
+            Como tu código está en el repositorio <strong>https://github.com/f866055/RENDER</strong>, solo debes seguir estos 2 pasos en tu cuenta de Render:
           </p>
 
           <div className="guide-grid">
@@ -222,7 +222,7 @@ export default function App() {
 
       <footer className="app-footer">
         <div className="footer-content">
-          <p className="footer-brand">🏛️ Aura Residences • Inmobiliaria Full-Stack preparada para Render</p>
+          <p className="footer-brand">🏎️ Veloce Motors • Showroom Automotriz Full-Stack preparado para Render</p>
           <p className="footer-sub">Repositorio: github.com/f866055/RENDER • Rama main</p>
         </div>
       </footer>

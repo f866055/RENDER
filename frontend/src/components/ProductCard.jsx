@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import RoomPreviewModal from './RoomPreviewModal';
+import VehicleDetailsModal from './VehicleDetailsModal';
 
 export default function ProductCard({ producto }) {
-  const [showVisitModal, setShowVisitModal] = useState(false);
-  const [showRoomPreview, setShowRoomPreview] = useState(false);
+  const [showTestDriveModal, setShowTestDriveModal] = useState(false);
+  const [showVehicleDetails, setShowVehicleDetails] = useState(false);
+  const [tipoInteres, setTipoInteres] = useState('test-drive');
 
   const {
     id,
     nombre,
+    marca,
     categoria,
     precio,
     ubicacion,
-    habitaciones,
-    banos,
-    area,
-    estacionamientos,
-    piso,
+    potencia,
+    aceleracion,
+    velocidadMax,
+    motor,
+    transmision,
+    traccion,
+    kilometraje,
+    ano,
     descripcion,
     rating,
     imagen,
     destacado,
     estado,
-    habitacionesDetalle
+    galeriaDetalle
   } = producto;
 
-  const totalHabitacionesFotos = habitacionesDetalle ? habitacionesDetalle.length : habitaciones;
+  const totalVistas = galeriaDetalle ? galeriaDetalle.length : 3;
 
   const precioFormateado = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -34,8 +39,8 @@ export default function ProductCard({ producto }) {
 
   return (
     <>
-      <article className="apartment-card glass-panel">
-        {/* Imagen y Badges de la Propiedad */}
+      <article className="apartment-card vehicle-card glass-panel">
+        {/* Imagen y Badges del Superdeportivo */}
         <div className="card-image-wrap">
           <img
             src={imagen}
@@ -47,71 +52,77 @@ export default function ProductCard({ producto }) {
 
           <div className="card-badge-top-left">
             <span className="badge-category">{categoria}</span>
-            {piso && <span className="badge-piso">{piso}</span>}
+            {ano && <span className="badge-ano">Año {ano}</span>}
           </div>
 
           <div className="card-badge-top-right">
             {destacado && <span className="badge-destacado">★ Destacado</span>}
-            <span className="badge-estado">{estado || 'En Venta'}</span>
+            <span className="badge-estado">{estado || 'Disponible'}</span>
           </div>
 
           <div className="card-price-overlay">
             <span className="price-tag">{precioFormateado}</span>
-            <span className="price-term">USD • Entrega Inmediata</span>
+            <span className="price-term">USD • Certificación VIP</span>
           </div>
 
-          {/* Botón flotante para ver habitaciones directamente en la foto */}
+          {/* Botón flotante para inspeccionar vistas directamente en la foto */}
           <button
-            onClick={() => setShowRoomPreview(true)}
+            onClick={() => setShowVehicleDetails(true)}
             className="btn-quick-room-preview"
-            title="Abrir galería de habitaciones e interiores"
+            title="Abrir galería de inspección 360°"
           >
-            🛏️ Ver Habitaciones ({totalHabitacionesFotos})
+            🔍 Inspeccionar Vistas ({totalVistas})
           </button>
         </div>
 
-        {/* Contenido de la Propiedad */}
+        {/* Contenido del Vehículo */}
         <div className="card-body">
           <div className="card-location">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
-            <span>{ubicacion || 'Ubicación Exclusiva'}</span>
+            <span>{ubicacion || 'Showroom Veloce Motors'}</span>
           </div>
 
           <h3 className="card-title">{nombre}</h3>
           <p className="card-description">{descripcion}</p>
 
-          {/* Características Clave (Habitaciones, Baños, Metraje, Garaje) */}
-          <div className="card-specs-grid">
+          {/* Especificaciones de Rendimiento Clave (HP, 0-100, Vel. Máx, Transmisión) */}
+          <div className="card-specs-grid vehicle-specs-grid">
             <div
               className="spec-item spec-item-interactive"
-              onClick={() => setShowRoomPreview(true)}
-              title="Haz clic para ver fotos y medidas de las habitaciones"
+              onClick={() => setShowVehicleDetails(true)}
+              title="Potencia neta del motor"
             >
-              <span className="spec-icon">🛏️</span>
-              <span className="spec-text"><strong>{habitaciones}</strong> Hab</span>
-              <span className="spec-subtag">Ver fotos ↗</span>
+              <span className="spec-icon">🐎</span>
+              <span className="spec-text"><strong>{potencia}</strong></span>
+              <span className="spec-subtag">Potencia</span>
             </div>
 
-            <div className="spec-item" title={`${banos} Baños`}>
-              <span className="spec-icon">🚿</span>
-              <span className="spec-text"><strong>{banos}</strong> Baños</span>
-              <span className="spec-subtag">Completos</span>
+            <div className="spec-item" title="Aceleración de 0 a 100 km/h">
+              <span className="spec-icon">⚡</span>
+              <span className="spec-text"><strong>{aceleracion}</strong></span>
+              <span className="spec-subtag">Aceleración</span>
             </div>
 
-            <div className="spec-item" title={`${area} Metros Cuadrados`}>
-              <span className="spec-icon">📐</span>
-              <span className="spec-text"><strong>{area}</strong> m²</span>
-              <span className="spec-subtag">Área total</span>
+            <div className="spec-item" title="Velocidad Máxima Homologada">
+              <span className="spec-icon">🏁</span>
+              <span className="spec-text"><strong>{velocidadMax}</strong></span>
+              <span className="spec-subtag">Vel. Punta</span>
             </div>
 
-            <div className="spec-item" title={`${estacionamientos} Estacionamientos`}>
-              <span className="spec-icon">🚗</span>
-              <span className="spec-text"><strong>{estacionamientos}</strong> Pk</span>
-              <span className="spec-subtag">Privados</span>
+            <div className="spec-item" title="Caja de cambios y transmisión">
+              <span className="spec-icon">⚙️</span>
+              <span className="spec-text"><strong>{kilometraje}</strong></span>
+              <span className="spec-subtag">Odómetro</span>
             </div>
+          </div>
+
+          {/* Ficha técnica compacta */}
+          <div className="vehicle-tech-pill">
+            <span className="tech-pill-icon">🔧</span>
+            <span className="tech-pill-text">{motor}</span>
           </div>
         </div>
 
@@ -119,66 +130,89 @@ export default function ProductCard({ producto }) {
         <div className="card-footer">
           <div className="rating-wrap">
             <span className="rating-star">★</span>
-            <span className="rating-score">{rating || '4.9'}</span>
-            <span className="rating-label">Exclusivo</span>
+            <span className="rating-score">{rating || '5.0'}</span>
+            <span className="rating-label">Elite Class</span>
           </div>
 
           <div className="card-actions-row">
             <button
-              onClick={() => setShowRoomPreview(true)}
+              onClick={() => setShowVehicleDetails(true)}
               className="btn-rooms-outline"
-              title="Ver fotografías de cada habitación"
+              title="Ver fotografías de inspección técnica"
             >
-              🛏️ Habitaciones
+              🔍 Vistas 360°
             </button>
 
             <button
-              onClick={() => setShowVisitModal(true)}
+              onClick={() => setShowTestDriveModal(true)}
               className="btn-schedule"
-              title="Agendar una visita personalizada"
+              title="Solicitar cotización o test drive VIP"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
               </svg>
-              Visita VIP
+              Test Drive VIP
             </button>
           </div>
         </div>
       </article>
 
-      {/* Modal Visor de Habitaciones */}
-      {showRoomPreview && (
-        <RoomPreviewModal
-          apartamento={producto}
-          onClose={() => setShowRoomPreview(false)}
-          onScheduleVisit={() => setShowVisitModal(true)}
+      {/* Modal Visor de Inspección de Vehículo */}
+      {showVehicleDetails && (
+        <VehicleDetailsModal
+          vehiculo={producto}
+          onClose={() => setShowVehicleDetails(false)}
+          onScheduleTestDrive={() => setShowTestDriveModal(true)}
         />
       )}
 
-      {/* Modal de Agendamiento de Visita */}
-      {showVisitModal && (
-        <div className="modal-backdrop" onClick={() => setShowVisitModal(false)}>
+      {/* Modal de Agendamiento de Test Drive / Cotización */}
+      {showTestDriveModal && (
+        <div className="modal-backdrop" onClick={() => setShowTestDriveModal(false)}>
           <div className="modal-box glass-panel animate-fade-in" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setShowVisitModal(false)}>✕</button>
+            <button className="modal-close" onClick={() => setShowTestDriveModal(false)}>✕</button>
             <div className="modal-header">
-              <span className="modal-icon">🏛️</span>
-              <h3>Agendar Visita Inmobiliaria</h3>
-              <p className="modal-property-name">{nombre} — {ubicacion}</p>
+              <span className="modal-icon">🏎️</span>
+              <h3>Solicitud de Adquisición & Test Drive</h3>
+              <p className="modal-property-name">{nombre} — {precioFormateado}</p>
             </div>
             
             <div className="modal-body">
               <p className="modal-info">
-                Has seleccionado el apartamento con <strong>{area} m²</strong>, <strong>{habitaciones} habitaciones</strong> y valor de <strong>{precioFormateado}</strong>.
-                Un asesor senior de <strong>Aura Residences</strong> coordinará tu recorrido privado.
+                Has seleccionado el <strong>{nombre}</strong> ({potencia}, {aceleracion}). 
+                Un concierge especializado de <strong>Veloce Motors</strong> coordinará tu experiencia privada en pista o showroom.
               </p>
+
+              {/* Selector de Interés */}
+              <div className="inquiry-type-selector">
+                <button
+                  type="button"
+                  onClick={() => setTipoInteres('test-drive')}
+                  className={`inquiry-btn ${tipoInteres === 'test-drive' ? 'inquiry-active' : ''}`}
+                >
+                  🏁 Test Drive en Pista
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTipoInteres('compra')}
+                  className={`inquiry-btn ${tipoInteres === 'compra' ? 'inquiry-active' : ''}`}
+                >
+                  💳 Compra Directa
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTipoInteres('leasing')}
+                  className={`inquiry-btn ${tipoInteres === 'leasing' ? 'inquiry-active' : ''}`}
+                >
+                  📑 Leasing Corporativo
+                </button>
+              </div>
               
               <div className="modal-form-dummy">
                 <input type="text" placeholder="Tu Nombre Completo" className="modal-input" />
                 <input type="email" placeholder="Tu Correo Electrónico" className="modal-input" />
-                <input type="tel" placeholder="Tu Teléfono / WhatsApp" className="modal-input" />
+                <input type="tel" placeholder="Teléfono / WhatsApp de Contacto" className="modal-input" />
               </div>
             </div>
 
@@ -186,13 +220,13 @@ export default function ProductCard({ producto }) {
               <button
                 className="btn-modal-confirm"
                 onClick={() => {
-                  alert(`¡Solicitud enviada para ${nombre}! Un asesor de Aura Residences te contactará pronto.`);
-                  setShowVisitModal(false);
+                  alert(`¡Solicitud recibida para el ${nombre}! Un concierge de Veloce Motors te contactará en menos de 2 horas.`);
+                  setShowTestDriveModal(false);
                 }}
               >
-                Confirmar Visita VIP
+                Confirmar Solicitud VIP
               </button>
-              <button className="btn-modal-cancel" onClick={() => setShowVisitModal(false)}>
+              <button className="btn-modal-cancel" onClick={() => setShowTestDriveModal(false)}>
                 Cerrar
               </button>
             </div>

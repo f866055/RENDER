@@ -58,7 +58,7 @@ export const checkHealth = async (baseUrl = DEFAULT_API_URL) => {
 };
 
 /**
- * Consulta la lista de apartamentos / productos (GET /api/productos)
+ * Consulta la lista de vehículos / productos (GET /api/productos)
  * @param {string} [categoria] - Categoría opcional para filtrar
  * @param {string} [baseUrl] - URL base opcional
  * @returns {Promise<{ ok: boolean, productos: Array, total: number, message?: string }>}
@@ -81,7 +81,7 @@ export const fetchProductos = async (categoria = 'todos', baseUrl = DEFAULT_API_
   });
 
   if (!response.ok) {
-    throw new Error(`Error ${response.status}: No se pudo cargar los apartamentos desde ${url}`);
+    throw new Error(`Error ${response.status}: No se pudo cargar el catálogo de vehículos desde ${url}`);
   }
 
   const data = await response.json();

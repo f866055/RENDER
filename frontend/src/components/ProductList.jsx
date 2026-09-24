@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 
-const CATEGORIAS_INMOBILIARIAS = [
-  { id: 'todos', label: '🏙️ Todos los Apartamentos' },
-  { id: 'Penthouse', label: '👑 Penthouses' },
-  { id: 'Loft', label: '🏢 Lofts' },
-  { id: 'Dúplex', label: '🪜 Dúplex' },
-  { id: 'Estudio', label: '🛋️ Estudios Smart' },
-  { id: 'Familiar', label: '👨‍👩‍👧‍👦 Residencias Familiares' }
+const CATEGORIAS_VEHICULOS = [
+  { id: 'todos', label: '🏎️ Toda la Colección' },
+  { id: 'Superdeportivos', label: '🚀 Superdeportivos' },
+  { id: 'Hiperdeportivos', label: '🦁 Hiperdeportivos' },
+  { id: 'Gran Turismo', label: '✨ Gran Turismo' },
+  { id: 'SUVs de Rendimiento', label: '🚙 SUVs de Lujo' },
+  { id: 'Eléctricos & Híbridos', label: '⚡ Eléctricos & Híbridos' }
 ];
 
 export default function ProductList({
@@ -20,15 +20,17 @@ export default function ProductList({
 }) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Filtrado reactivo en el frontend por texto de búsqueda (nombre, ubicación, descripción)
-  const apartamentosFiltrados = productos.filter((apt) => {
+  // Filtrado reactivo en el frontend por texto de búsqueda (nombre, marca, motor, categoría, descripción)
+  const vehiculosFiltrados = productos.filter((car) => {
     const query = searchTerm.toLowerCase();
-    const coincideNombre = apt.nombre?.toLowerCase().includes(query);
-    const coincideUbicacion = apt.ubicacion?.toLowerCase().includes(query);
-    const coincideDescripcion = apt.descripcion?.toLowerCase().includes(query);
-    const coincideCategoria = apt.categoria?.toLowerCase().includes(query);
+    const coincideNombre = car.nombre?.toLowerCase().includes(query);
+    const coincideMarca = car.marca?.toLowerCase().includes(query);
+    const coincideUbicacion = car.ubicacion?.toLowerCase().includes(query);
+    const coincideMotor = car.motor?.toLowerCase().includes(query);
+    const coincideDescripcion = car.descripcion?.toLowerCase().includes(query);
+    const coincideCategoria = car.categoria?.toLowerCase().includes(query);
 
-    return coincideNombre || coincideUbicacion || coincideDescripcion || coincideCategoria;
+    return coincideNombre || coincideMarca || coincideUbicacion || coincideMotor || coincideDescripcion || coincideCategoria;
   });
 
   return (
@@ -37,11 +39,11 @@ export default function ProductList({
         <div className="toolbar-header">
           <div>
             <div className="section-badge-inline">
-              <span className="sparkle">✨</span> Catálogo Exclusivo
+              <span className="sparkle">✨</span> Inventario Exclusivo 2024 / 2025
             </div>
-            <h2 className="section-title">Apartamentos en Venta</h2>
+            <h2 className="section-title">Vehículos y Superdeportivos en Venta</h2>
             <p className="section-description">
-              Propiedades listas para entrega inmediata obtenidas dinámicamente vía <code>GET /api/productos</code>
+              Unidades listas para entrega inmediata y prueba en circuito obtenidas vía <code>GET /api/productos</code>
             </p>
           </div>
 
@@ -52,7 +54,7 @@ export default function ProductList({
             </svg>
             <input
               type="text"
-              placeholder="Buscar por zona, torre, tipo o amenidad..."
+              placeholder="Buscar por marca, modelo, motor (V8, V12) o specs..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -63,9 +65,9 @@ export default function ProductList({
           </div>
         </div>
 
-        {/* Barra de Tipologías Inmobiliarias */}
+        {/* Barra de Categorías Automotrices */}
         <div className="categories-bar">
-          {CATEGORIAS_INMOBILIARIAS.map((cat) => (
+          {CATEGORIAS_VEHICULOS.map((cat) => (
             <button
               key={cat.id}
               onClick={() => onSelectCategoria(cat.id)}
@@ -81,35 +83,35 @@ export default function ProductList({
       {loading ? (
         <div className="products-state-box glass-panel animate-fade-in">
           <div className="spinner large-spinner"></div>
-          <h3>Cargando apartamentos desde el servidor...</h3>
-          <p className="text-muted">Obteniendo disponibilidades, fotografías y amenidades en tiempo real</p>
+          <h3>Cargando superdeportivos desde el servidor...</h3>
+          <p className="text-muted">Obteniendo fichas técnicas de potencia, aceleración y fotografías de inspección</p>
         </div>
       ) : error ? (
         <div className="products-state-box glass-panel state-error animate-fade-in">
           <div className="state-icon">⚠️</div>
-          <h3>Error al obtener el catálogo de apartamentos</h3>
+          <h3>Error al obtener el catálogo de vehículos</h3>
           <p className="text-muted">{error}</p>
           <button onClick={onRefresh} className="btn-retry">
             Reintentar Consulta
           </button>
         </div>
-      ) : apartamentosFiltrados.length === 0 ? (
+      ) : vehiculosFiltrados.length === 0 ? (
         <div className="products-state-box glass-panel animate-fade-in">
-          <div className="state-icon">🏢</div>
-          <h3>No se encontraron apartamentos con esos criterios</h3>
-          <p className="text-muted">Prueba buscando otra tipología o borrando el filtro de búsqueda.</p>
+          <div className="state-icon">🏎️</div>
+          <h3>No se encontraron vehículos con esos criterios</h3>
+          <p className="text-muted">Prueba seleccionando otra categoría o borrando el término de búsqueda.</p>
         </div>
       ) : (
         <>
           <div className="products-meta">
             <span>
-              Mostrando <strong>{apartamentosFiltrados.length}</strong> de {productos.length} propiedades disponibles
+              Mostrando <strong>{vehiculosFiltrados.length}</strong> de {productos.length} superdeportivos en catálogo
             </span>
-            <span className="meta-badge-currency">Precios expresados en USD</span>
+            <span className="meta-badge-currency">Precios expresados en USD • Entrega Inmediata</span>
           </div>
 
           <div className="apartments-grid animate-fade-in">
-            {apartamentosFiltrados.map((item) => (
+            {vehiculosFiltrados.map((item) => (
               <ProductCard key={item.id} producto={item} />
             ))}
           </div>

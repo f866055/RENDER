@@ -5,9 +5,10 @@ import productosRoutes from './productos.routes.js';
 const router = Router();
 
 router.use('/health', healthRoutes);
-// Endpoint requerido por la especificación original
+// Endpoint principal requerido por la especificación original
 router.use('/productos', productosRoutes);
-// Alias inmobiliario para mayor claridad semántica
+// Alias semánticos para mayor flexibilidad
+router.use('/vehiculos', productosRoutes);
 router.use('/apartamentos', productosRoutes);
 
 export default router;
